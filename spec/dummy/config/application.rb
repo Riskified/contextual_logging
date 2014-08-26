@@ -60,6 +60,14 @@ module Dummy
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    config.log_tags = [ :subdomain, :uuid ]
+
+    config.contextual_logging.context_from_request = ->(request) {
+      {
+        request_uuid: request.uuid
+      }
+    }
   end
 end
 

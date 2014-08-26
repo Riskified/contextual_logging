@@ -43,6 +43,22 @@ module ContextualLogging
       Thread.current[LOGGER_CONTEXT_THREAD_VAR_KEY] ||= HashWithIndifferentAccess.new
     end
 
+    def current_tags
+      current_context['tags'] ||= []
+    end
+
+    def tagged(*tags)
+      old_tags = current_tags.dup
+      push_tags(*tags)
+      yield self
+    ensure
+      current_context['tags'] = old_tags
+    end
+
+    def clear_tags!
+      current_tags.clear!
+    end
+
     # Borrowed from TaggedLogging
     %w(fatal error warn info debug unknown).each do |severity|
       eval <<-EOM, nil, __FILE__, __LINE__ + 1
@@ -72,6 +88,12 @@ module ContextualLogging
     end
 
     private
+
+    def push_tags(*tags)
+      tags.flatten.reject(&:blank?).tap do |new_tags|
+        current_tags.concat new_tags
+      end
+    end
 
     def set_context(value)
       self.class.set_thread_context(value)

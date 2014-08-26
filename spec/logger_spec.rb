@@ -1,4 +1,5 @@
-require 'contextual_logging'
+require 'spec_helper'
+
 describe ContextualLogging::Logger do
   before(:each) do
     ContextualLogging::Logger.reset_thread_context!
@@ -55,6 +56,19 @@ describe ContextualLogging::Logger do
     end
   end
 
+  describe 'implementing tags a la TaggedLogging' do
+    it "should respond to tagged with a block" do
+      expected_tags = ['holy cow', "By Grabthar's hammer"]
+      logger.tagged('holy cow') do
+        logger.tagged("By Grabthar's hammer") do
+          logger.info("what a savings")
+          expect(logger.current_tags).to eql(expected_tags)
+          expect(logger.current_context['tags']).to eql(expected_tags)
+        end
+      end
+    end
+  end
+
   describe "#add" do
     %w( fatal error warn info debug unknown ).each do |log_level|
       it "should be called by ##{log_level}" do
@@ -78,7 +92,7 @@ describe ContextualLogging::Logger do
         "someother_request_context"=>"this is awesome request 123123",
         "message"=>"Some information all on its own",
         "log_level"=>"INFO",
-        "@timestamp"=>stub_time.iso8601(3),
+        "@timestamp"=>stub_time.iso8601,
         "@version"=>"1"
       }
       hash = JSON[logged]
