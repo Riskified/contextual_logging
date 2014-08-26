@@ -47,7 +47,7 @@ describe ContextualLogging::Rack::Logger do
     status, _env, _app = local_middleware.call env_with_req_id
     expect(status).to eql(200)
     log_lines = @log_stream.string.split("\n")
-    expect(log_lines.size).to eql(2)
+    expect(log_lines.size).to eql(1)
     parsed = JSON[log_lines.last]
     expect(parsed['request_uuid']).to eql(req_id)
     expect(parsed['message']).to match(%r{Started GET "/index" for 10\.10\.0\.5 at })
