@@ -30,25 +30,10 @@ describe MyController do
 
     log_lines = @log_stream.string.split("\n").map { |e| JSON[e] }
     log_line = log_lines.last
-    expected = {
-      "controller"=>"MyController",
-       "action"=>"index",
-       "params"=>{},
-       "message"=>"logging in the action: info",
-       "request_format" => "html",
-       "request_method" => "GET",
-       "request_path" => '/index',
-       "request_remote_ip" => "127.0.0.1",
-       "request_subdomain" => '',
-       "request_uuid" => '',
-       "log_level"=>"INFO",
-       "@timestamp"=>"2014-08-23T04:47:24Z",
-       "@version"=>"1"
-    }
 
     expect(log_line['controller']).to eql("MyController")
     expect(log_line['action']).to eql("index")
-    expect(log_line['params']).to eql({})
+    expect(log_line['params']).to eql({'controller' => 'my', 'action' => 'index'})
   end
 end
 

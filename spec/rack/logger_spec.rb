@@ -1,11 +1,19 @@
 require 'spec_helper'
 
 class MyController < ActionController::Base
+  before_filter :grab_controller_stuff
 
+  cattr_accessor :last_params
   def index
     Rails.logger.info("logging in the action: info")
     render :ok, :text => 'hey'
   end
+
+  def grab_controller_stuff
+    self.class.last_params = self.params
+    true
+  end
+
 end
 
 describe ContextualLogging::Rack::Logger do
@@ -66,11 +74,14 @@ describe ContextualLogging::Rack::Logger do
       get '/foo_index'
       log_lines = @log_stream.string.split("\n").map {|l| JSON[l]}
       expect(log_lines.map{|a| a['request_uuid']}.uniq.compact).to eql([log_lines[1]['request_uuid']])
-
-
       non_blank_keys = log_lines.map {|a| a.select{|k,v| v.presence }.keys }
       # Assert we cleared context
       expect(Rails.logger.current_context).to eql({})
+    end
+
+    it 'should not clobber action, controller from the params' do
+      get '/foo_index'
+      expect(MyController.last_params).to eql("controller" => "my", "action" => "index")
     end
   end
 end

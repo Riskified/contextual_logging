@@ -54,13 +54,15 @@ module ContextualLogging
       end
 
       def compute_context(request)
+
         starting_context = {
           request_uuid: request.uuid,
           request_method: request.request_method,
           request_remote_ip: request.ip,
           request_path: request.filtered_path,
           request_subdomain: request.subdomain,
-          request_format: request.format.try(:ref),
+          # TODO: Get the mime type of the request without clobbering the action/controller params
+          #request_format: request.format.try(:ref),
           tags: compute_tags(request).reject(&:blank?)
         }
         custom_mixed_in = @context_mixers && @context_mixers.call(request)
