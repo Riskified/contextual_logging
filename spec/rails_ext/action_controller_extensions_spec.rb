@@ -24,7 +24,7 @@ describe MyController do
 
   it "should mix in controller context before process action" do
     app.routes.draw do
-      match '/index' => 'my#index'
+      get '/index' => 'my#index'
     end
     get '/index'
 

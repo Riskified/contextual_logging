@@ -66,7 +66,7 @@ describe ContextualLogging::Rack::Logger do
   describe "called as part of the rails middleware" do
     before(:each) do
       app.routes.draw do
-        match '/foo_index' => "my#index"
+        get '/foo_index' => "my#index"
       end
     end
 
