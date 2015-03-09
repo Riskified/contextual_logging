@@ -1,5 +1,5 @@
 module ContextualLogging
-  class LogstashFormatter
+  class LogstashMessageFormatter
     def format(severity, message, extra_context)
       msg_hash = HashWithIndifferentAccess.new('message' => message, 'log_level' => severity)
       logstash_data = extra_context.merge(msg_hash)

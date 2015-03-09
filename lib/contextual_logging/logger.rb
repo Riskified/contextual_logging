@@ -3,9 +3,10 @@ module ContextualLogging
   class Logger
     LOGGER_CONTEXT_THREAD_VAR_KEY = :__current_logstash_logger_context
 
-    def initialize(logger, formatter = LogstashFormatter.new)
+    def initialize(logger = Logger.new, message_formatter = LogstashMessageFormatter.new)
       @logger    = logger
-      @formatter = formatter
+      @logger.formatter = proc {|sev, date, prog, msg| "#{msg}\n"}
+      @message_formatter = message_formatter
     end
 
     def with_context(ctx)
@@ -35,7 +36,7 @@ module ContextualLogging
         end
       end
 
-      formatted_message = @formatter.format(format_severity(severity), message, current_context)
+      formatted_message = @message_formatter.format(format_severity(severity), message, current_context)
       @logger.add(severity, formatted_message)
     end
 
