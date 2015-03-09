@@ -26,7 +26,7 @@ describe MyController do
     app.routes.draw do
       match '/index' => 'my#index'
     end
-    get :index
+    get '/index'
 
     log_lines = @log_stream.string.split("\n").map { |e| JSON[e] }
     log_line = log_lines.last
