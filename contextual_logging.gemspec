@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 4.0.13"
+  s.add_dependency "rails", "~> 4"
   s.add_dependency "logstash-event", "~> 1.2.02"
 
   s.add_development_dependency "sqlite3"
