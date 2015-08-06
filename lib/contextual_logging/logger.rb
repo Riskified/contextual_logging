@@ -1,3 +1,5 @@
+require 'colorize'
+
 module ContextualLogging
   # Very much inspired by ActiveSupport::TaggedLogging
   class Logger
@@ -35,7 +37,7 @@ module ContextualLogging
           progname = nil
         end
       end
-
+      message = message.uncolorize unless message.nil?
       formatted_message = @message_formatter.format(format_severity(severity), message, current_context)
       @logger.add(severity, formatted_message)
     end
