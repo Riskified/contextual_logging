@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 4"
   s.add_dependency "logstash-event", "~> 1.2.02"
-  s.add_dependency "colorize", "~> 0.7.7"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "pry"
