@@ -23,6 +23,10 @@ describe ContextualLogging::Logger do
     end
   end
 
+  it "should not explode when fed an array" do
+    expect { logger.info(['hey', 'whatup']) }.to_not raise_error
+  end
+
   describe "#with_context" do
     it 'should mix in some context for the length of the block' do
       starting_context = logger.current_context.dup
