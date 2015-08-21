@@ -35,7 +35,8 @@ module ContextualLogging
           progname = nil
         end
       end
-      message = message.gsub(/\e\[[;0-9]*m/, '').strip unless message.nil?
+
+      message = message.gsub(/\e\[[;0-9]*m/, '').strip if message.respond_to?(:gsub)
       formatted_message = @message_formatter.format(format_severity(severity), message, current_context)
       @logger.add(severity, formatted_message)
     end
