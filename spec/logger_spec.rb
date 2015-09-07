@@ -96,7 +96,7 @@ describe ContextualLogging::Logger do
         "someother_request_context"=>"this is awesome request 123123",
         "message"=>"Some information all on its own",
         "log_level"=>"INFO",
-        "@timestamp"=>stub_time.iso8601,
+        "@timestamp"=>stub_time.iso8601.insert(-2, '.000'), # Ruby's iso8601 format can't append ms like this
         "@version"=>"1"
       }
       hash = JSON[logged]
