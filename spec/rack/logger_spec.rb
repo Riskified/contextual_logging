@@ -27,7 +27,7 @@ describe ContextualLogging::Rack::Logger do
     end
   end
 
-  def env_for url, opts={}
+  def env_for(url, opts={})
     Rack::MockRequest.env_for(url, opts)
   end
 
@@ -65,6 +65,7 @@ describe ContextualLogging::Rack::Logger do
 
   describe "called as part of the rails middleware" do
     before(:each) do
+      @ctx_logger.flush
       app.routes.draw do
         get '/foo_index' => "my#index"
       end
