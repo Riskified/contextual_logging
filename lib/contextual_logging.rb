@@ -10,6 +10,15 @@ module ContextualLogging
   require 'contextual_logging/rails_ext/action_controller_extensions'
   require 'contextual_logging/rack/logger'
 
-  # Railtie
-  require 'contextual_logging/railtie' if defined?(Rails)
+
+  if defined?(Rails)
+    # Railtie
+    require 'contextual_logging/railtie'
+
+    # Delayed Job
+    require 'contextual_logging/delayed_job' if defined?(Delayed::Worker)
+  end
+
+
+
 end
